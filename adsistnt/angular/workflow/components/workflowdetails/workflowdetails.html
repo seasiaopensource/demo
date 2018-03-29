@@ -1,0 +1,173 @@
+<div id="singleWorkflow" class="page-layout simple fullwidth" layout="row">
+<!-- LIST -->
+  <div class="list-wrapper">
+
+    <div class="list md-whiteframe-1dp" layout="column">
+
+      <!-- LIST HEADER -->
+      <div class="list-header" layout="row" layout-align="space-between center">
+
+        <div class="list-header-name white-fg">
+          <span>{{ vm.selectedWorkflow.title }}</span>
+        </div>
+
+        <md-menu md-offset="0 48px" class="options list-header-option-button">
+
+          <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)" aria-label="Options">
+            <md-icon md-menu-origin md-font-icon="icon-dots-vertical white-fg"></md-icon>
+          </md-button>
+
+          <md-menu-content class="options-menu-content" width="4">
+            <md-menu-item>
+              <md-button ng-click="vm.deleteWorkflow(vm.selectedWorkflow.workflowId)" aria-label="Remove List">
+                <md-icon md-font-icon="icon-delete" md-menu-align-target></md-icon>
+                <span>Delete Workflow</span>
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+
+        </md-menu>
+
+      </div>
+      <!-- / LIST HEADER -->
+
+      <!-- LIST CONTENT -->
+      <div class="list-content" layout="column">
+
+        <div class="list-cards" ms-scroll>
+
+          <!-- CARD -->
+          <div class="list-card md-whiteframe-1dp"
+               ng-repeat="task in vm.selectedWorkflow.tasks | orderBy:'position' track by $index"
+               ng-style="{ 'border': '2px solid', 'border-color': vm.taskColor(task), 'background-color': task.status == 'DONE' ? '#808080' : 'white' }"
+               ng-click="vm.openCardDialog($event, task)">
+
+            <!-- CARD DETAILS -->
+            <div class="list-card-details">
+
+              <!-- CARD SORT HANDLE -->
+              <div class="list-card-sort-handle">
+                <md-icon md-font-icon="icon-cursor-move" class="icon s16"></md-icon>
+              </div>
+              <!-- /CARD SORT HANDLE -->
+
+              <!-- CARD LABELS -->
+              <div class="list-card-labels" layout="row" layout-wrap>
+                <span class="list-card-label" ng-repeat="label in task.labels" ng-style="{ 'background-color': label.color }">
+                  <md-tooltip md-direction="top">{{ label.name }}</md-tooltip>
+                </span>
+              </div>
+              <!-- / CARD LABELS -->
+
+              <!-- CARD NAME -->
+              <div class="list-card-name">{{ task.title }}</div>
+              <!-- / CARD NAME -->
+
+              <div class="list-card-badges" layout="row" layout-align="start center">
+
+                <!-- CARD DUE -->
+                <span class="badge due-date"
+                      ng-style="{'background-color':(vm.isOverdue(task.fromdate) ?'green':'#808080')}"
+                      ng-if="task.fromdate" layout="row"
+                      layout-align="start center">
+                  <i class="icon-clock s16"></i>
+                  <span>{{task.fromdate | date:'mediumDate'}}</span>
+                </span>
+                <!-- / CARD DUE -->
+
+                <!-- CARD CHECK ITEMS STATUS -->
+                <span class="badge check-items"
+                      ng-style="{'background-color':(vm.checkChecklistStatus(task) ?'green':'#808080')}"
+                      layout="row" layout-align="start center">
+                  <i class="icon-checkbox-marked-circle s16"></i>
+                  <span>{{vm.getCheckItems(task)}}</span>
+                  <span>/</span>
+                  <span>{{vm.getTotalCheckItems(task)}}</span>
+                </span>
+                <!-- / CARD CHECK ITEMS STATUS -->
+
+              </div>
+
+              <!-- CARD MEMBERS -->
+              <div class="list-card-members"
+                   layout="row">
+                <div class="list-card-member"
+                     ng-repeat="agentId in task.reviewerIds track by $index">
+
+                  <img class="list-card-member-avatar"
+                       ng-src="{{vm.board.members.getById(memberId).avatar}}">
+
+                  <div>
+                    <div>{{vm.getCustomerName(agentId)}}</div>
+                  </div>
+                </div>
+
+              </div>
+
+              <!-- CARD MEMBERS -->
+              <div class="list-card-members"
+                   layout="row">
+                <div class="list-card-member"
+                     ng-repeat="agentId in task.agentIds track by $index">
+
+                  <img class="list-card-member-avatar"
+                       ng-src="{{vm.board.members.getById(memberId).avatar}}">
+
+                  <div>
+                    <div>{{vm.getCustomerName(agentId)}}</div>
+                  </div>
+                </div>
+
+              </div>
+              <!-- / CARD MEMBERS -->
+
+            </div>
+            <!-- / CARD DETAILS -->
+
+            <!-- CARD FOOTER -->
+            <div class="list-card-footer" layout="row" layout-align="space-between center">
+              <div layout="row" layout-align="start center">
+
+                <!-- CARD SUBSCRIBE -->
+                <span ng-if="vm.checkReviewer(task)" class="list-card-footer-item" layout="row" layout-align="start center">
+                  <i class="icon-eye s18"></i>
+                </span>
+                <!-- / CARD SUBSCRIBE -->
+
+                <div layout="row" layout-align="start center">
+                  <span ng-if="task.description !== ''" class="list-card-footer-item" layout="row" layout-align="start center">
+                    <i class="icon-document s18"></i>
+                    <md-tooltip md-direction="top">{{ task.description }}</md-tooltip>
+                  </span>
+                </div>
+              </div>
+
+              <div layout="row" layout-align="end center">
+
+                <!-- CARD ATTACHMENT -->
+                <span class="list-card-footer-item" ng-show="task.uploads.length > 0" layout="row" layout-align="start center">
+                  <i class="icon-attachment s18"></i>
+                  <span class="value">{{ task.uploads.length }}</span>
+                </span>
+                <!-- / CARD ATTACHMENT -->
+
+                <!-- CARD COMMENTS -->
+                <span class="list-card-footer-item" ng-show="task.comments.length > 0" layout="row" layout-align="start center">
+                  <i class="icon-comment s18"></i>
+                  <span class="value">{{ task.comments.length }}</span>
+                </span>
+                <!-- / CARD COMMENTS -->
+
+              </div>
+            </div>
+            <!-- CARD FOOTER -->
+          </div>
+          <!-- / CARD -->
+        </div>
+      </div>
+      <!-- / LIST CONTENT -->
+
+    </div>
+  </div>
+  <!-- / LIST -->
+</div>

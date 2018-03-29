@@ -1,0 +1,68 @@
+#overview {
+  min-height: 100%;
+  min-width: 100%;
+  md-tabs {
+
+  }
+  th {
+    padding-left: 20px;
+
+    .status-column {
+      max-width: 80px !important;
+    }
+    .options-column {
+      max-width: 150px;
+    }
+  }
+  td {
+    padding-left: 20px;
+  }
+  md-tab {
+    text-transform: none;
+  }
+  .add-file-button {
+    position: absolute;
+    top: 148px;
+    left: 16px;
+    background-color: #42D1DC !important;
+    &:active, &:focus, &:hover {
+      background-color: #42BEC9 !important;
+    }
+  }
+
+  ul {
+    padding: 0;
+  }
+
+  tr {
+    max-height: 80px;
+  }
+
+  .dataTable {
+    width: 100% !important;
+  }
+  .dataTables_wrapper {
+    width: 100% !important;
+  }
+
+  .status {
+    padding: 4px;
+    height: 25px;
+    border-radius: 4px;
+    text-align: center;
+
+    &.status-active {
+      color: white;
+      background-color: #dbd52c;
+    }
+    &.status-inactive {
+      color: black;
+      background-color: #ff9f9f;
+    }
+    &.status-done {
+      color: black;
+      background-color: #a9db2c;
+    }
+  }
+
+}

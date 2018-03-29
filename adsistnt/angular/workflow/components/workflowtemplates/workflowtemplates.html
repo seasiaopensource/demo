@@ -1,0 +1,100 @@
+<div id="templates" class="page-layout simple fullwidth" layout="row" class="scrollable" ms-scroll style="max-height: 750px;">
+
+  <!---Add workflow button--->
+  <div class="list-wrapper" style="min-width: 275px;">
+    <div class="list" layout="column" style="background: transparent !important;">
+      <div class="list-header" layout="row" layout-align="space-between end" style=" background: linear-gradient(to bottom, #ffffff 0%, #ffffff 33%, #f4f4f4 100%);border-top-right-radius:50px;border-bottom-right-radius:50px;">
+        <div class="list-header-name" style="overflow: visible; ">
+
+          <md-button ng-click="vm.openEditTemplatesDialog($event)" class="add-file-button md-fab md-warn md-button ng-scope md-default-theme md-ink-ripple add-template-button" style="margin-left: -6px;">
+            <md-icon md-font-icon="icon-plus"></md-icon>
+          </md-button>
+          <h3 style="padding-left: 6px;">Add template</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!---/ add workflow button--->
+
+  <!-- LIST -->
+  <div class="list-wrapper" ng-repeat="list in vm.board">
+    <div class="list md-whiteframe-1dp" layout="column">
+      <!-- LIST HEADER -->
+      <div class="list-header" layout="row" layout-align="space-between center">
+        <div class="list-header-name white-fg">
+          <span editable-text="list.title">{{list.title}}</span>
+        </div>
+
+        <md-menu md-offset="0 48px" class="options list-header-option-button">
+
+          <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)" aria-label="Options">
+            <md-icon md-menu-origin md-font-icon="icon-dots-vertical white-fg"></md-icon>
+          </md-button>
+
+          <md-menu-content class="options-menu-content" width="3">
+            <md-menu-item>
+              <md-button ng-click="vm.startWorkflow($event, list)" aria-label="Start Workflow">
+                <md-icon md-font-icon="icon-play" md-menu-align-target></md-icon>
+                <span>Start Workflow</span>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="vm.editTemplate($event, list.workflowTemplateId)" aria-label="Edit Template">
+                <md-icon md-font-icon="icon-border-color" md-menu-align-target></md-icon>
+                <span>Edit Template</span>
+              </md-button>
+            </md-menu-item>
+            <md-menu-item>
+              <md-button ng-click="vm.deleteWorkflowTemplate(list.workflowTemplateId)" aria-label="Delete Template">
+                <md-icon md-font-icon="icon-delete" md-menu-align-target></md-icon>
+                <span>Delete Template</span>
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+
+        </md-menu>
+      </div>
+
+      <div class="list-content" ms-scroll>
+        <div class="list-cards" >
+          <div class="list-cards">
+            <div class="list-card md-whiteframe-1dp"  ng-style="{'background-color': (list.reviewReady == false ?'#808080':'white')}" ng-repeat="task in list.tasks">
+              <div class="list-card-details">
+                <div class="list-card-sort-handle">
+                  <md-icon md-font-icon="icon-cursor-move" class="icon s16"></md-icon>
+                </div>
+                <div class="list-card-labels" layout="row" layout-wrap>
+                  <span class="list-card-label" ng-repeat="label in task.labels" ng-style="{ 'background-color': label.color }">
+                    <md-tooltip>{{ label.name }}</md-tooltip>
+                  </span>
+                </div>
+                <div class="list-card-name">{{ task.title }}</div>
+                <!-- / CARD NAME -->
+
+                <div class="list-card-badges" layout="row" layout-align="start center">
+
+                  <!-- CARD CHECK ITEMS STATUS -->
+                  <span class="badge check-items"
+                        ng-style="{ 'background-color': (vm.checkChecklistStatus(task) ? 'green' : '#808080') }"
+                        layout="row" layout-align="start center">
+                    <i class="icon-checkbox-marked-circle s16"></i>
+                    <span>{{ vm.getCheckItems(task) }}</span>
+                    <span>/</span>
+                    <span>{{ vm.getTotalCheckItems(task) }}</span>
+                  </span>
+                  <!-- / CARD CHECK ITEMS STATUS -->
+
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- / LIST CONTENT -->
+     </div>
+  </div>
+  <!-- / LIST -->
+</div>

@@ -1,0 +1,75 @@
+<div id="workflows" class="page-layout simple fullwidth" layout="column">
+  <!-- HEADER -->
+  <div class="header md-accent-bg">
+    <div style="margin-bottom: -35px">
+      <span><md-icon md-font-icon="icon-trello" class="white-fg" style="margin-top: -7px"></md-icon></span>
+      <span style="font-size: 24px;padding-left: 15px;">Workflows</span>
+    </div>
+
+  </div>
+  <!-- / HEADER -->
+  <!-- CONTENT -->
+  <md-content class="content" flex layout="column" style="overflow: hidden">
+    <md-tabs md-dynamic-height md-selected="vm.selectedTab">
+
+      <md-tab ng-click="vm.hideDetails()">
+        <md-tab-label>
+          <span style="text-transform: uppercase">Workflows</span>
+        </md-tab-label>
+
+        <md-tab-body>
+          <md-content>
+            <zm-workflow-overview ng-if="vm.selectedTab === 0"></zm-workflow-overview>
+          </md-content>
+        </md-tab-body>
+      </md-tab>
+
+      <md-tab ng-if="vm.showDetails">
+        <md-tab-label>
+          <span style="text-transform: uppercase">Details</span>
+        </md-tab-label>
+        <md-tab-body>
+          <md-content>
+            <zm-workflow-details selectedworkflowentry="vm.selectedEntry"></zm-workflow-details>
+          </md-content>
+        </md-tab-body>
+      </md-tab>
+
+      <md-tab ng-click="vm.selectTab(1)">
+        <md-tab-label>
+          <span style="text-transform: uppercase">Templates</span>
+        </md-tab-label>
+        <md-tab-body>
+          <md-content>
+            <zm-workflow-templates ng-if="vm.selectedTab === 1 && !vm.showDetails"></zm-workflow-templates>
+          </md-content>
+        </md-tab-body>
+      </md-tab>
+
+      <md-tab ng-if="vm.tasksToAttend.length > 0" ng-click="vm.selectTab(2)">
+        <md-tab-label>
+          <span style="text-transform: uppercase">Agent</span>
+        </md-tab-label>
+        <md-tab-body>
+          <md-content>
+            <zm-workflow-agent ng-if="vm.selectedTab === 2"></zm-workflow-agent>
+          </md-content>
+        </md-tab-body>
+      </md-tab>
+
+      <md-tab ng-if="vm.tasksToReview.length > 0" ng-click="vm.selectTab(3)">
+        <md-tab-label>
+          <span style="text-transform: uppercase">Reviewer</span>
+        </md-tab-label>
+        <md-tab-body>
+          <md-content>
+            <zm-workflow-reviewer ng-if="(vm.selectedTab === 3 && vm.tasksToAttend.length > 0 && vm.tasksToReview.length > 0) ||
+            (vm.selectedTab === 2 && vm.tasksToAttend.length === 0 && vm.tasksToReview.length > 0)"></zm-workflow-reviewer>
+          </md-content>
+        </md-tab-body>
+      </md-tab>
+
+    </md-tabs>
+  </md-content>
+  <!-- / CONTENT -->
+</div>

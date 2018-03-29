@@ -1,0 +1,71 @@
+<div id="overview" class="page-layout simple fullwidth" layout="row"  class="scrolltab scrollable" ms-scroll style="max-height: 640px;">
+  <table class="dataTable row-border hover" datatable="ng" dt-options="vm.dtOptions">
+    <thead>
+      <tr>
+        <th class="secondary-text">
+          <div class="table-header">
+            <span class="column-title">Workflowname</span>
+          </div>
+        </th>
+        <th class="secondary-text status-column" style="max-width: 80px">
+          <div class="table-header">
+            <span class="column-title">Status</span>
+          </div>
+        </th>
+        <th class="secondary-text">
+          <div class="table-header">
+            <span class="column-title">Description</span>
+          </div>
+        </th>
+        <th class="secondary-text" style="max-width: 200px">
+          <div class="table-header">
+            <span class="column-title">Progress</span>
+          </div>
+        </th>
+        <th class="secondary-text">
+          <div class="table-header">
+            <span class="column-title">User</span>
+          </div>
+        </th>
+        <th class="secondary-text options-column" style="max-width: 150px"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="entry in vm.workflows">
+        <td>
+          <div class="board-name">{{ entry.title }}</div>
+        </td>
+        <td>
+          <div class="status" ng-class="{ 'status-active': entry.status === 'ACTIVE', 'status-inactive': entry.status === 'INACTIVE', 'status-done': entry.status === 'DONE' }">
+            <label>{{ entry.status == 'ACTIVE' ? 'Active' : (entry.status == 'INACTIVE' ? 'Inactive' : 'Done') }}</label>
+          </div>
+        </td>
+        <td>{{ entry.description }}</td>
+        <td>
+          <div class="pb-8" layout="row" layout-align="space-between start">
+            <span class="h3">Completion with :</span>
+            <span class="h3 secondary-text font-weight-500">{{ entry.progress }}%</span>
+          </div>
+          <md-progress-linear md-mode="determinate" value="{{ entry.progress }}"></md-progress-linear>
+        </td>
+        <td>
+          <ul>
+            <li ng-repeat="agent in entry.agentIds" style="display: inline-block;list-style: none"><img class="avatar" src="assets/images/avatars/profile.jpg"></li>
+          </ul>
+        </td>
+        <td>
+          <md-button ng-click="vm.openDetailsTab(entry)">
+            <md-icon md-font-icon="icon-border-color"></md-icon>
+            Edit
+          </md-button>
+          <br>
+          <md-button ng-click="vm.deleteWorkflow(entry.workflowId)">
+            <!--<md-button ng-click="vm.showconfirm($event, entry.id, entry.customerId)">-->
+            <md-icon md-font-icon="icon-trash"></md-icon>
+            Delete
+          </md-button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
